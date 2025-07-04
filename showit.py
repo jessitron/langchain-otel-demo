@@ -8,14 +8,6 @@ from opentelemetry.sdk.trace.export import ConsoleSpanExporter, SimpleSpanProces
 
 tracer = trace.get_tracer(__name__)
 
-with tracer.start_as_current_span("test") as span:
-    print("hi")
-    print(span.get_span_context().trace_id)
-
-# Add console exporter to see traces
-span_processor = SimpleSpanProcessor(ConsoleSpanExporter())
-trace.get_tracer_provider().add_span_processor(span_processor)
-
 # Instrument OpenAI to capture API calls
 OpenAIInstrumentor().instrument()
 
@@ -36,37 +28,32 @@ def main():
     )
     
     print("=== LangChain Conversation Demo ===")
-    print("Each call looks simple but sends growing conversation history...\n")
     
     # First exchange - looks innocent
     print("1. Simple question:")
-    response1 = conversation.predict(input="What's the capital of France?")
+    response1 = conversation.predict(input="What is your favorite programming language?")
     print(f"Response: {response1}\n")
     
-    # Second exchange - now sends previous context
     print("2. Follow-up question:")
-    response2 = conversation.predict(input="What's its population?")
+    response2 = conversation.predict(input="What are its disadvantages?")
     print(f"Response: {response2}\n")
     
-    # Third exchange - even more context
-    print("3. Another follow-up:")
-    response3 = conversation.predict(input="What's the weather like there today?")
+    print("3. Separate question:")
+    response3 = conversation.predict(input="What is a programming language that you struggle with?")
     print(f"Response: {response3}\n")
     
-    # Fourth exchange - conversation keeps growing
-    print("4. One more question:")
-    response4 = conversation.predict(input="What are some good restaurants there?")
+    print("4. Completely unrelated:")
+    response4 = conversation.predict(input="Who shot Abraham Lincoln? Give your response in JSON format.")
     print(f"Response: {response4}\n")
     
-    # Show what's actually stored in memory
-    print("=== What LangChain is Actually Tracking ===")
-    print("Memory buffer contents:")
-    print(memory.buffer)
+    # # Show what's actually stored in memory
+    # print("=== What LangChain is Actually Tracking ===")
+    # print("Memory buffer contents:")
+    # print(memory.buffer)
     
     print(f"\nTotal conversation turns: {len(memory.chat_memory.messages)}")
 
 if __name__ == "__main__":
     with tracer.start_as_current_span("main") as span:
-        print("hi main")
-        print(span.get_span_context().trace_id)
+        print("Trace ID:", span.get_span_context().trace_id)
         main()
