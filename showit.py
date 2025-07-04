@@ -1,16 +1,16 @@
 import os
-import openai
-from langchain.chat_models import ChatOpenAI
+from langchain_community.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationChain
 from opentelemetry import trace
 from opentelemetry.instrumentation.openai import OpenAIInstrumentor
-from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import ConsoleSpanExporter, SimpleSpanProcessor
 
-# Set up OpenTelemetry tracing
-trace.set_tracer_provider(TracerProvider())
 tracer = trace.get_tracer(__name__)
+
+with tracer.start_as_current_span("test") as span:
+    print("hi")
+    print(span.get_span_context().trace_id)
 
 # Add console exporter to see traces
 span_processor = SimpleSpanProcessor(ConsoleSpanExporter())
@@ -66,4 +66,7 @@ def main():
     print(f"\nTotal conversation turns: {len(memory.chat_memory.messages)}")
 
 if __name__ == "__main__":
-    main()
+    with tracer.start_as_current_span("main") as span:
+        print("hi main")
+        print(span.get_span_context().trace_id)
+        main()
