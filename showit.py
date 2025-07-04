@@ -3,16 +3,10 @@ from langchain_community.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationChain
 from opentelemetry import trace
-from opentelemetry.instrumentation.openai import OpenAIInstrumentor
-from opentelemetry.sdk.trace.export import ConsoleSpanExporter, SimpleSpanProcessor
 
 tracer = trace.get_tracer(__name__)
 
-# Instrument OpenAI to capture API calls
-OpenAIInstrumentor().instrument()
-
 def main():
-    # Initialize LangChain with conversation memory
     llm = ChatOpenAI(
         temperature=0.7,
         model_name="gpt-3.5-turbo",
@@ -50,8 +44,11 @@ def main():
     # print("=== What LangChain is Actually Tracking ===")
     # print("Memory buffer contents:")
     # print(memory.buffer)
+
+    # print the number of tokens in the conversation
+    print(f"\nTotal conversation tokens: {llm.get_num_tokens_from_messages(memory.chat_memory.messages)}")
     
-    print(f"\nTotal conversation turns: {len(memory.chat_memory.messages)}")
+    # print(f"\nTotal conversation turns: {len(memory.chat_memory.messages)}")
 
 if __name__ == "__main__":
     with tracer.start_as_current_span("main") as span:
