@@ -1,10 +1,14 @@
-#
+# Python LangChain OpenTelemetry Demo
 
-## once
+Super simple python program that makes some calls to OpenAI, and sends telemetry with OpenTelemetry.
+
+## Installation
+
+Do this once, to set up venv:
 
 `./setup.sh`
 
-## once a day
+## daily
 
 ```
 source langchain-otel-demo/bin/activate
@@ -14,7 +18,7 @@ export OTEL_SERVICE_NAME=langchain-otel-demo
 
 ... then if you aren't running a local collector (you probably aren't), set these env vars to send directly to Honeycomb:
 
-(set your-api-key to a Honeycomb ingest key. A free account is great.)
+(set your-api-key to a [Honeycomb](https://www.honeycomb.io/) ingest key. A free account is great.)
 
 ```
 export OTEL_TRACES_EXPORTER="otlp"
