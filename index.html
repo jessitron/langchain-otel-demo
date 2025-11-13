@@ -9,12 +9,25 @@
         body {
             margin: 0;
             padding: 0;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            gap: 3rem;
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
         }
 
         /* The animated text element */
@@ -37,8 +50,8 @@
 
             /* animation-fill-mode: What happens AFTER the animation finishes
                - forwards: Keeps the final state (stays at translateX(0))
-               - backwards: Returns to original state
-               - both: Applies both forwards and backwards
+               - backwards: Applies first keyframe DURING delay period
+               - both: Combines backwards + forwards (see examples below!)
                Without this, the text would snap back to off-screen! */
             animation-fill-mode: forwards;
 
@@ -77,6 +90,40 @@
             }
         }
 
+        /* ===== DELAY EXAMPLES ===== */
+        /* These demonstrate the difference between 'forwards' and 'both' with animation-delay */
+
+        .delayed-forwards {
+            font-size: 1.5rem;
+            color: #e63946;
+            animation-name: slideFromRight;
+            animation-duration: 1s;
+            animation-delay: 2s;  /* ← Wait 2 seconds before animating */
+            animation-timing-function: ease-out;
+            animation-fill-mode: forwards;
+
+            /* WATCH: During the 2-second delay, this text appears at CENTER (its natural position)
+               Then after 2s, it suddenly jumps off-screen-right and slides back to center.
+               WHY? Because 'forwards' only affects AFTER the animation, not during the delay. */
+        }
+
+        .delayed-both {
+            font-size: 1.5rem;
+            color: #2a9d8f;
+            animation-name: slideFromRight;
+            animation-duration: 1s;
+            animation-delay: 2s;  /* ← Same delay */
+            animation-timing-function: ease-out;
+            animation-fill-mode: both;
+
+            /* WATCH: During the 2-second delay, this text is ALREADY off-screen-right
+               (positioned at the first keyframe: translateX(100vw))
+               Then after 2s, it smoothly slides to center.
+               WHY? Because 'both' = 'backwards' + 'forwards'
+               - 'backwards' = apply first keyframe during delay
+               - 'forwards' = keep last keyframe after animation */
+        }
+
         /* EXPERIMENT: Try changing these values to see how they affect the animation:
            1. animation-duration: Try 0.5s (fast) or 3s (slow)
            2. animation-timing-function: Try 'linear' or 'ease-in'
@@ -91,8 +138,25 @@
     </style>
 </head>
 <body>
-    <div class="question">
-        What is your favorite programming language?
+    <div class="container">
+        <div class="label">No delay - starts immediately</div>
+        <div class="question">
+            What is your favorite programming language?
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="label">2s delay + fill-mode: forwards (jumps during delay)</div>
+        <div class="delayed-forwards">
+            This appears at CENTER first, then jumps and slides
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="label">2s delay + fill-mode: both (smooth from start)</div>
+        <div class="delayed-both">
+            This starts off-screen immediately, then slides smoothly
+        </div>
     </div>
 </body>
 </html>
