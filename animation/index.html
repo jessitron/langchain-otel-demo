@@ -4,21 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CSS Animation Demo</title>
-    <!-- Google Fonts: Crimson Text -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         /* ===== LOCAL FONT LOADING ===== */
         /* @font-face tells the browser to load a font from your computer/project
            You can reference this font by its font-family name anywhere in your CSS */
-        @font-face {
-            font-family: 'Sen';  /* The name you'll use in CSS */
-            src: url('./fonts/Sen-VariableFont_wght.ttf') format('truetype');
-            /* Variable fonts contain multiple weights in one file!
-               You can use font-weight: 400, 600, 700, etc. with this single file */
-        }
-
         @font-face {
             font-family: 'Tenor Sans';
             src: url('./fonts/TenorSans-Regular.ttf') format('truetype');
@@ -31,10 +20,9 @@
             padding: 0;
             height: 100vh;
             display: flex;
-            flex-direction: column;  /* Stack items vertically */
-            gap: 3rem;  /* Space between items */
             justify-content: center;
             align-items: center;
+            font-family: 'Tenor Sans', sans-serif;
             background-color: #f0f0f0;
         }
 
@@ -65,24 +53,6 @@
 
             /* SHORTHAND: You can combine all the above into one line:
                animation: slideFromRight 1.5s ease-out forwards; */
-        }
-
-        /* Google Font version */
-        .google-font {
-            font-family: 'Crimson Text', serif;
-        }
-
-        /* Local font version - using the Sen variable font */
-        .local-font {
-            font-family: 'Sen', sans-serif;
-            /* You can try different weights: 300, 400, 600, 700, 800
-               Since Sen is a variable font, all weights are available! */
-            font-weight: 600;
-        }
-
-        /* Another local font - Tenor Sans */
-        .tenor-font {
-            font-family: 'Tenor Sans', sans-serif;
         }
 
         /* ===== KEYFRAMES DEFINITION ===== */
@@ -130,25 +100,8 @@
     </style>
 </head>
 <body>
-    <div class="question google-font">
+    <div class="question">
         What is your favorite programming language?
-        <div style="font-size: 0.8rem; color: #666; margin-top: 0.5rem;">
-            (Google Font: Crimson Text)
-        </div>
-    </div>
-
-    <div class="question local-font">
-        What is your favorite programming language?
-        <div style="font-size: 0.8rem; color: #666; margin-top: 0.5rem;">
-            (Local Font: Sen)
-        </div>
-    </div>
-
-    <div class="question tenor-font">
-        What is your favorite programming language?
-        <div style="font-size: 0.8rem; color: #666; margin-top: 0.5rem;">
-            (Local Font: Tenor Sans)
-        </div>
     </div>
 </body>
 </html>
