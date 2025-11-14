@@ -36,8 +36,13 @@ body {
 }
 
 /* Applied by JS after moveInFromLeft completes */
+
 .fall-down {
   animation: fallDown 1.5s ease-out forwards;
+}
+
+.keep-scooching {
+  animation: continueLeft 0.5s forwards;
 }
 
 /* ===== KEYFRAMES DEFINITIONS ===== */
@@ -55,6 +60,15 @@ body {
   }
 }
 
+@keyframes continueLeft {
+  0% {
+    transform: translateX(0vw);
+  }
+  100% {
+    transform: translateX(calc(-1 * var(--offset, 0px)));
+  }
+}
+
 /* ANIMATION 2: Rotate and fall down */
 @keyframes fallDown {
   0% {
@@ -63,9 +77,8 @@ body {
     transform: translateX(calc(-1 * var(--offset, 0px))) rotate(0deg);
   }
   33% {
-    /* Stay in same horizontal position, rotate 90 degrees counterclockwise
-               The rotation happens around transform-origin: left center */
-    transform: translateX(calc(-1 * var(--offset, 0px))) rotate(-90deg);
+    /* Stay in same horizontal position, rotate 90 degrees clockwise */
+    transform: translateX(calc(-1 * var(--offset, 0px))) rotate(90deg);
   }
   100% {
     /* Move down while keeping the horizontal offset and rotation
