@@ -29,9 +29,8 @@ body {
   animation: moveInFromLeft 1.5s ease-out forwards;
 }
 
-/* Space between words */
+/* Styling for each word span */
 .question span {
-  margin-right: 0.5em;
   display: inline-block; /* Needed for transforms to work */
   transform-origin: left center; /* Rotate around left edge */
 }
