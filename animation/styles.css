@@ -26,9 +26,7 @@ body {
   color: #333;
 
   /* ===== ANIMATION PROPERTIES ===== */
-
-  /* animation-name: References the @keyframes rule below */
-  animation-name: slideFromRight;
+  /* Animation will be triggered by JavaScript, not on page load */
 
   /* animation-duration: How long the animation takes (in seconds or milliseconds)
                We increased this to 3s to accommodate our three-phase animation:
@@ -51,6 +49,16 @@ body {
 
   /* SHORTHAND: You can combine all the above into one line:
                animation: slideFromRight 1.5s ease-out forwards; */
+}
+
+/* Class to trigger "What" animation */
+.question span.animate-what {
+  animation-name: slideFromRight;
+}
+
+/* Class to trigger "is" animation - will use JS to set the translateX value */
+.question span.animate-is {
+  animation-name: slideFromRightIs;
 }
 
 /* ===== KEYFRAMES DEFINITION ===== */
@@ -95,6 +103,29 @@ body {
                    Also it's important to do translateY before rotate(-90deg)
                    because we don't want the translation to happen along the rotated axis */
     transform: translateY(40vh) rotate(-90deg);
+  }
+}
+
+/* Animation for "is" - uses CSS variable for the final translateX position */
+@keyframes slideFromRightIs {
+  /* PHASE 1 (0% → 40%): Slide in from the right */
+  0% {
+    transform: translateX(100vw);
+  }
+
+  /* PHASE 2 (40%): Stop at the same x-coordinate as "What" */
+  40% {
+    /* This will be set dynamically by JavaScript */
+    transform: translateX(var(--is-offset, 0px));
+  }
+  60% {
+    /* Rotate 90 degrees counterclockwise */
+    transform: translateX(var(--is-offset, 0px)) rotate(-90deg);
+  }
+
+  /* PHASE 3 (60% → 100%): Move downward */
+  100% {
+    transform: translateX(var(--is-offset, 0px)) translateY(40vh) rotate(-90deg);
   }
 }
 
