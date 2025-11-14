@@ -25,6 +25,12 @@ body {
   font-size: 2rem;
   color: #333;
 
+  /* ===== TRANSFORM ORIGIN ===== */
+  /* This sets the pivot point for rotations
+     - default is 'center center' (50% 50%)
+     - 'left center' means rotate around the left edge vertically centered */
+  transform-origin: left center;
+
   /* ===== ANIMATION PROPERTIES ===== */
   /* Animation will be triggered by JavaScript, not on page load */
 
