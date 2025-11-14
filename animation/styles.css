@@ -39,7 +39,6 @@ body {
                - 0% → 50% (1.5s): Slide in from right
                - 50% (instant): Rotate 90deg
                - 50% → 100% (1.5s): Move down */
-  animation-duration: 3s;
 
   /* animation-timing-function: Controls the speed curve
                - ease-out: Starts fast, slows down at the end (natural feeling)
@@ -59,16 +58,17 @@ body {
 
 /* Class to trigger "What" animation */
 .question span.animate-what {
+  animation-duration: 3s;
   animation-name: slideFromRight;
 }
 
 /* Class to trigger "is" animation - will use JS to set the translateX value */
 .question span.animate-is {
+  animation-duration: 3.6s;
   animation-name: slideFromRightIs;
   /* animation-delay: How long to wait before starting the animation
      - 0.5s means "is" will wait half a second before starting
      - Try different values like 0.2s, 1s, etc. */
-  animation-delay: 0.5s;
 }
 
 /* ===== KEYFRAMES DEFINITION ===== */
