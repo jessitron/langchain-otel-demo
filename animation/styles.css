@@ -24,18 +24,21 @@ body {
   font-size: 2rem;
   color: #333;
 
-  /* ===== TWO ANIMATIONS IN SEQUENCE ===== */
+  /* ===== FIRST ANIMATION: Slide in from right ===== */
+  /* The div only does moveInFromLeft, then JS will trigger fallDown on each span */
+  animation: moveInFromLeft 1.5s ease-out forwards;
+}
 
-  /* To run multiple animations in sequence, we list them comma-separated:
-               - First animation: moveInFromLeft runs for 1.5s
-               - Second animation: fallDown runs for 1.5s but WAITS 1.5s to start
+/* Space between words */
+.question span {
+  margin-right: 0.5em;
+  display: inline-block; /* Needed for transforms to work */
+  transform-origin: left center; /* Rotate around left edge */
+}
 
-               The format is: name duration timing-function delay fill-mode */
-  animation:
-    moveInFromLeft 1.5s ease-out 0s forwards,
-    fallDown 1.5s ease-out 1.5s forwards;
-
-  transform-origin: left center;
+/* Applied by JS after moveInFromLeft completes */
+.fall-down {
+  animation: fallDown 1.5s ease-out forwards;
 }
 
 /* ===== KEYFRAMES DEFINITIONS ===== */
