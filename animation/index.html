@@ -36,8 +36,12 @@
             /* animation-name: References the @keyframes rule below */
             animation-name: slideFromRight;
 
-            /* animation-duration: How long the animation takes (in seconds or milliseconds) */
-            animation-duration: 1.5s;
+            /* animation-duration: How long the animation takes (in seconds or milliseconds)
+               We increased this to 3s to accommodate our three-phase animation:
+               - 0% → 50% (1.5s): Slide in from right
+               - 50% (instant): Rotate 90deg
+               - 50% → 100% (1.5s): Move down */
+            animation-duration: 3s;
 
             /* animation-timing-function: Controls the speed curve
                - ease-out: Starts fast, slows down at the end (natural feeling)
@@ -56,33 +60,41 @@
         }
 
         /* ===== KEYFRAMES DEFINITION ===== */
-        /* @keyframes defines the animation sequence
-           Think of it like: "from this state... to that state"
-           You can also use percentages: 0%, 50%, 100% for multi-step animations */
+        /* @keyframes with MULTIPLE STEPS for sequential animations
+           Using percentages (0%, 50%, 100%) lets us create complex motion sequences */
         @keyframes slideFromRight {
-            /* Starting state: positioned off-screen to the right */
-            from {
-                /* transform: translateX() moves elements horizontally
-                   - Positive values = move right
-                   - Negative values = move left
-                   - 100vw = 100% of viewport width (entire screen width)
-
-                   WHY transform instead of 'left' or 'margin-left'?
-                   - GPU-accelerated = smoother, 60fps animations
-                   - Doesn't trigger layout recalculation = better performance
-                   - Can combine multiple transforms (translate, scale, rotate) */
+            /* PHASE 1 (0% → 50%): Slide in from the right */
+            0% {
+                /* Starting position: off-screen to the right */
                 transform: translateX(100vw);
-
-                /* Optional: You can also animate opacity for a fade-in effect */
-                /* opacity: 0; */
             }
 
-            /* Ending state: at its natural position in the center */
-            to {
-                /* translateX(0) means "no horizontal offset" = original position */
-                transform: translateX(0);
+            /* PHASE 2 (50%): At center, rotate 90 degrees counterclockwise */
+            50% {
+                /* COMBINING TRANSFORMS: Multiple transforms in ONE property
+                   - translateX(0): Move to center position
+                   - rotate(-90deg): Rotate 90 degrees counterclockwise
+                     (negative = counterclockwise, positive = clockwise)
 
-                /* opacity: 1; */
+                   IMPORTANT: Order matters when combining transforms!
+                   - translate THEN rotate: rotation happens around original axis
+                   - rotate THEN translate: translation follows rotated axis
+
+                   Here we translate first, then rotate, so the text rotates
+                   in place at the center */
+                transform: translateX(0) rotate(-90deg);
+            }
+
+            /* PHASE 3 (50% → 100%): Move downward */
+            100% {
+                /* After rotation, we add vertical translation
+                   - rotate(-90deg): Keep the rotation
+                   - translateY(40vh): Move down 40% of viewport height
+
+                   Notice we MUST repeat rotate(-90deg) here!
+                   If we don't, the text would rotate back to 0deg while moving down.
+                   Each keyframe defines the COMPLETE state at that moment */
+                transform: translateX(0) rotate(-90deg) translateY(40vh);
             }
         }
 
