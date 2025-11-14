@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return "<span>" + content + "</span>";
   }
 
-  const questionParts = ["W", "hat ", "is ", "you", "r f", "av", "orite", " program", "ming ", "language", "?"];
+  const questionParts = ["C", "'m ", "on", ",", " what's", " your", " favorite", " programming", " language", "?", " no", " r", "ly"];
   function nestTheRest(strings) {
     console.log("length of strings: ", strings.length);
     if (strings.length === 1) {
