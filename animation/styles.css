@@ -17,16 +17,56 @@ body {
   align-items: center;
   font-family: "Tenor Sans", sans-serif;
   background-color: #f0f0f0;
+  text-align: center;
+}
+
+#watch-the-tokens {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.token-row {
+  display: grid;
+  grid-template-areas: "label count" "nothing input";
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding-bottom: 100px;
+}
+
+.token-count {
+  grid-area: "count";
+  text-align: left;
+}
+
+.token-count-label {
+  grid-area: "label";
+  text-align: right;
+}
+
+.around-question {
+  overflow: visible;
+  grid-area: "input";
+  max-width: 50vw;
+}
+
+.report {
+  font-family: sans-serif; /* TODO: a heavy slab font */
+  font-size: 2em;
+  font-weight: 600;
 }
 
 /* The animated text element */
 .question {
   font-size: 2rem;
   color: #333;
+  text-align: left;
+  min-width: 100vw;
+}
 
+.original-move-in {
   /* ===== FIRST ANIMATION: Slide in from right ===== */
-  /* The div only does moveInFromLeft, then JS will trigger fallDown on each span */
-  animation: moveInFromLeft 1.5s ease-out forwards;
+  animation: moveInFromLeft 1.5s linear forwards;
 }
 
 /* Styling for each word span */
@@ -38,11 +78,12 @@ body {
 /* Applied by JS after moveInFromLeft completes */
 
 .fall-down {
-  animation: fallDown 1.5s ease-out forwards;
+  color: orange;
+  animation: fallDown 1.5s linear forwards;
 }
 
 .keep-scooching {
-  animation: continueLeft 0.5s forwards;
+  animation: continueLeft 0.5s linear forwards;
 }
 
 /* ===== KEYFRAMES DEFINITIONS ===== */
@@ -74,24 +115,21 @@ body {
   0% {
     /* Move left by the offset (so span aligns to left edge of div), no rotation yet
                --offset is set by JavaScript based on span's position */
-    transform: translateX(calc(-1 * var(--offset, 0px))) rotate(0deg);
+    transform: rotate(0deg);
   }
   33% {
     /* Stay in same horizontal position, rotate 90 degrees clockwise */
-    transform: translateX(calc(-1 * var(--offset, 0px))) rotate(90deg);
+    transform: rotate(90deg);
   }
   100% {
     /* Move down while keeping the horizontal offset and rotation
                - translateX: Stay shifted left by offset
                - translateY(80vh): Move down 80% of viewport height
                - rotate(-90deg): Maintain the rotation */
-    transform: translateX(calc(-1 * var(--offset, 0px))) translateY(80vh) rotate(-90deg);
+    transform: translateY(80vh) rotate(-90deg);
   }
 }
 
-/* EXPERIMENT: Try changing these values to see how they affect the animations:
-           1. Change the durations: moveInFromLeft 1.5s → 0.5s (faster) or 3s (slower)
-           2. Change the delay: fallDown ... 1.5s → 2s (longer pause between animations)
-           3. Change timing functions: ease-out → linear (constant speed) or ease-in
-           4. In moveInFromLeft: Try translateX(-100vw) to slide in from the left instead
-           5. Add intermediate steps to fallDown for more complex motion */
+#butthole {
+  z-index: 100;
+}
