@@ -24,89 +24,60 @@ body {
   font-size: 2rem;
   color: #333;
 
-  /* ===== ANIMATION PROPERTIES ===== */
+  /* ===== TWO ANIMATIONS IN SEQUENCE ===== */
 
-  /* animation-name: References the @keyframes rule below */
-  animation-name: slideFromRight;
+  /* To run multiple animations in sequence, we list them comma-separated:
+               - First animation: moveInFromLeft runs for 1.5s
+               - Second animation: fallDown runs for 1.5s but WAITS 1.5s to start
 
-  /* animation-duration: How long the animation takes (in seconds or milliseconds)
-               We increased this to 3s to accommodate our three-phase animation:
-               - 0% → 50% (1.5s): Slide in from right
-               - 50% (instant): Rotate 90deg
-               - 50% → 100% (1.5s): Move down */
-  animation-duration: 3s;
-
-  /* animation-timing-function: Controls the speed curve
-               - ease-out: Starts fast, slows down at the end (natural feeling)
-               - Other options: linear, ease, ease-in, ease-in-out, cubic-bezier() */
-  animation-timing-function: ease-out;
-
-  /* animation-fill-mode: What happens AFTER the animation finishes
-               - forwards: Keeps the final state (stays at translateX(0))
-               - backwards: Returns to original state
-               - both: Applies both forwards and backwards
-               Without this, the text would snap back to off-screen! */
-  animation-fill-mode: forwards;
+               The format is: name duration timing-function delay fill-mode */
+  animation:
+    moveInFromLeft 1.5s ease-out 0s forwards,
+    fallDown 1.5s ease-out 1.5s forwards;
 
   transform-origin: left center;
-
-  /* SHORTHAND: You can combine all the above into one line:
-               animation: slideFromRight 1.5s ease-out forwards; */
 }
 
-/* ===== KEYFRAMES DEFINITION ===== */
-/* @keyframes with MULTIPLE STEPS for sequential animations
-           Using percentages (0%, 50%, 100%) lets us create complex motion sequences */
-@keyframes slideFromRight {
-  /* PHASE 1 (0% → 50%): Slide in from the right */
+/* ===== KEYFRAMES DEFINITIONS ===== */
+/* Two separate animations that run in sequence */
+
+/* ANIMATION 1: Slide in from the right */
+@keyframes moveInFromLeft {
   0% {
     /* Starting position: off-screen to the right */
     transform: translateX(100vw);
   }
-
-  /* PHASE 2 (50%): At center, rotate 90 degrees counterclockwise */
-  40% {
+  100% {
+    /* Ending position: centered */
     transform: translateX(0);
   }
-  60% {
-    /* COMBINING TRANSFORMS: Multiple transforms in ONE property
-                   - translateX(0): Move to center position
-                   - rotate(-90deg): Rotate 90 degrees counterclockwise
-                     (negative = counterclockwise, positive = clockwise)
+}
 
-                   IMPORTANT: Order matters when combining transforms!
-                   - translate THEN rotate: rotation happens around original axis
-                   - rotate THEN translate: translation follows rotated axis
-
-                   Here we translate first, then rotate, so the text rotates
-                   in place at the center */
-    transform: rotate(-90deg);
+/* ANIMATION 2: Rotate and fall down */
+@keyframes fallDown {
+  0% {
+    /* Start from where moveInFromLeft ended (centered, no rotation) */
+    transform: translateX(0) rotate(0deg);
   }
-
-  /* PHASE 3 (50% → 100%): Move downward */
+  33% {
+    /* First rotate 90 degrees counterclockwise
+               The rotation happens around transform-origin: left center */
+    transform: translateX(0) rotate(-90deg);
+  }
   100% {
-    /* After rotation, we add vertical translation
-          - translateY(40vh): Move down 40% of viewport height
-          - rotate(-90deg): Keep the rotation
+    /* Then move down while keeping the rotation
+               - translateY(80vh): Move down 80% of viewport height
+               - rotate(-90deg): Maintain the rotation
 
-                   Notice we MUST repeat rotate(-90deg) here!
-                   If we don't, the text would rotate back to 0deg while moving down.
-                   Each keyframe defines the COMPLETE state at that moment
-                   
-                   Also it's important to do translateY before rotate(-90deg)
-                   because we don't want the translation to happen along the rotated axis */
+               Order matters! translateY before rotate means we move down
+               in the normal (unrotated) direction, then display rotated */
     transform: translateY(80vh) rotate(-90deg);
   }
 }
 
-/* EXPERIMENT: Try changing these values to see how they affect the animation:
-           1. animation-duration: Try 0.5s (fast) or 3s (slow)
-           2. animation-timing-function: Try 'linear' or 'ease-in'
-           3. In @keyframes from: Try translateX(50vw) or translateX(-100vw)
-           4. Add more keyframe steps:
-              @keyframes slideFromRight {
-                  0% { transform: translateX(100vw); }
-                  50% { transform: translateX(-50px); } // slight overshoot
-                  100% { transform: translateX(0); }
-              }
-        */
+/* EXPERIMENT: Try changing these values to see how they affect the animations:
+           1. Change the durations: moveInFromLeft 1.5s → 0.5s (faster) or 3s (slower)
+           2. Change the delay: fallDown ... 1.5s → 2s (longer pause between animations)
+           3. Change timing functions: ease-out → linear (constant speed) or ease-in
+           4. In moveInFromLeft: Try translateX(-100vw) to slide in from the left instead
+           5. Add intermediate steps to fallDown for more complex motion */
