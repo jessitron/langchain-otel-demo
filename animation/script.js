@@ -11,10 +11,26 @@ document.addEventListener('DOMContentLoaded', () => {
       // Get all spans inside the question div
       const spans = question.querySelectorAll('span');
 
-      // Add the fall-down class to each span to trigger the animation
+      // Get the left edge of the div
+      const divRect = question.getBoundingClientRect();
+      const divLeft = divRect.left;
+
+      // Calculate offset for each span and trigger animation
       spans.forEach((span, index) => {
+        // Get the left edge of this span
+        const spanRect = span.getBoundingClientRect();
+        const spanLeft = spanRect.left;
+
+        // Calculate how far this span is from the left edge of the div
+        const offset = spanLeft - divLeft;
+
+        // Store the offset as a CSS custom property on this span
+        span.style.setProperty('--offset', `${offset}px`);
+
+        console.log(`Span ${index} ("${span.textContent}"): offset = ${offset}px`);
+
+        // Add the fall-down class to trigger the animation
         span.classList.add('fall-down');
-        console.log(`Added fall-down to span ${index}: ${span.textContent}`);
       });
     }
   });

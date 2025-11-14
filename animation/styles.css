@@ -58,22 +58,21 @@ body {
 /* ANIMATION 2: Rotate and fall down */
 @keyframes fallDown {
   0% {
-    /* Start from where moveInFromLeft ended (centered, no rotation) */
-    transform: translateX(0) rotate(0deg);
+    /* Move left by the offset (so span aligns to left edge of div), no rotation yet
+               --offset is set by JavaScript based on span's position */
+    transform: translateX(calc(-1 * var(--offset, 0px))) rotate(0deg);
   }
   33% {
-    /* First rotate 90 degrees counterclockwise
+    /* Stay in same horizontal position, rotate 90 degrees counterclockwise
                The rotation happens around transform-origin: left center */
-    transform: translateX(0) rotate(-90deg);
+    transform: translateX(calc(-1 * var(--offset, 0px))) rotate(-90deg);
   }
   100% {
-    /* Then move down while keeping the rotation
+    /* Move down while keeping the horizontal offset and rotation
+               - translateX: Stay shifted left by offset
                - translateY(80vh): Move down 80% of viewport height
-               - rotate(-90deg): Maintain the rotation
-
-               Order matters! translateY before rotate means we move down
-               in the normal (unrotated) direction, then display rotated */
-    transform: translateY(80vh) rotate(-90deg);
+               - rotate(-90deg): Maintain the rotation */
+    transform: translateX(calc(-1 * var(--offset, 0px))) translateY(80vh) rotate(-90deg);
   }
 }
 
