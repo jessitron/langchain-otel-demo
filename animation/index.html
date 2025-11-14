@@ -26,38 +26,49 @@
         background-color: #f0f0f0;
       }
 
-      /* The animated text element */
+      /* The animated text container */
       .question {
         font-size: 2rem;
         color: #333;
+        /* Since we're animating individual words, the container just holds them */
+      }
+
+      /* Animate each word (span) inside the question */
+      .question span {
+        /* display: inline-block allows transforms to work on inline elements
+           By default, spans are 'inline' and can't be transformed */
+        display: inline-block;
+
+        /* Add a small margin so words don't stick together after rotation */
+        margin-right: 0.3em;
 
         /* ===== ANIMATION PROPERTIES ===== */
 
         /* animation-name: References the @keyframes rule below */
         animation-name: slideFromRight;
 
-        /* animation-duration: How long the animation takes (in seconds or milliseconds)
-               We increased this to 3s to accommodate our three-phase animation:
-               - 0% → 50% (1.5s): Slide in from right
-               - 50% (instant): Rotate 90deg
-               - 50% → 100% (1.5s): Move down */
+        /* animation-duration: How long EACH word's animation takes */
         animation-duration: 3s;
 
-        /* animation-timing-function: Controls the speed curve
-               - ease-out: Starts fast, slows down at the end (natural feeling)
-               - Other options: linear, ease, ease-in, ease-in-out, cubic-bezier() */
+        /* animation-timing-function: Controls the speed curve */
         animation-timing-function: ease-out;
 
-        /* animation-fill-mode: What happens AFTER the animation finishes
-               - forwards: Keeps the final state (stays at translateX(0))
-               - backwards: Returns to original state
-               - both: Applies both forwards and backwards
-               Without this, the text would snap back to off-screen! */
+        /* animation-fill-mode: Keeps the final state after animation finishes */
         animation-fill-mode: forwards;
 
-        /* SHORTHAND: You can combine all the above into one line:
-               animation: slideFromRight 1.5s ease-out forwards; */
+        /* ===== ANIMATION DELAY (Staggered Start) ===== */
+        /* We'll use nth-child to give each word a different delay
+           This creates the word-by-word effect! */
       }
+
+      /* Apply staggered delays using nth-child selector
+         nth-child(1) = first word, nth-child(2) = second word, etc. */
+      .question span:nth-child(1) { animation-delay: 0s; }
+      .question span:nth-child(2) { animation-delay: 0.3s; }
+      .question span:nth-child(3) { animation-delay: 0.6s; }
+      .question span:nth-child(4) { animation-delay: 0.9s; }
+      .question span:nth-child(5) { animation-delay: 1.2s; }
+      .question span:nth-child(6) { animation-delay: 1.5s; }
 
       /* ===== KEYFRAMES DEFINITION ===== */
       /* @keyframes with MULTIPLE STEPS for sequential animations
@@ -118,6 +129,13 @@
     </style>
   </head>
   <body>
-    <div class="question">What is your favorite programming language?</div>
+    <div class="question">
+      <span>What</span>
+      <span>is</span>
+      <span>your</span>
+      <span>favorite</span>
+      <span>programming</span>
+      <span>language?</span>
+    </div>
   </body>
 </html>
